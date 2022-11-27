@@ -1,0 +1,10 @@
+{
+    "attributes":[ "nome", "sobrenome", "nacionalidade" ],
+    "where": {
+        "nome": "Diego", 
+        "sobrenome": "Machado",
+        "nacionalidade": "Brasileiro"
+    },
+    "offset": 5, 
+    "limit": 5
+}
