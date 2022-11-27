@@ -63,7 +63,7 @@ exports.findEquipe = async (params) => {
 };
 
 /**
- * Busca por todas as instancias da entidade 
+ * Busca por todas as instancias da entidade Piloto-Equipe
  * @access ADMIN
  * @return Se encontrado, retorna as instancias. Caso contrario, retorna null.
  */
@@ -104,17 +104,70 @@ exports.findPilotoEquipe = async (params) => {
 	}
 };
 
+/**
+ * Busca por todas as instancias da entidade 
+ * @access ADMIN
+ * @return Se encontrado, retorna as instancias. Caso contrario, retorna null.
+ */
+exports.findPilotoEquipe = async (params) => {
+	const { piloto, equipe, ano: id_ano } = params;
+	const { 
+		piloto: Piloto, 
+		construtores: Construtores, 
+		pilotoequipe: PilotoEquipe } = models;
+	
+	let where = []
+	where = where.concat(await ajustarFiltros([{id_ano}], "pilotoequipe"))
+	where = where.concat(await ajustarFiltros(piloto.where, "piloto"))
+	where = where.concat(await ajustarFiltros(equipe.where, "equipe"))
+
+	console.log(where);
+
+	try {
+
+		const data = await PilotoEquipe.findAndCountAll({
+			attributes: ["id_ano"],
+			where,
+			include: [
+				{
+					model: Piloto,
+					as: 'piloto',
+					attributes: piloto.attributes
+				},{
+					model: Construtores,
+					as: 'equipe',
+					attributes: equipe.attributes
+				}
+			]
+		});
+		return data;
+		
+	} catch (error) {
+		console.log(error);
+		throw error;
+	}
+};
+
 async function ajustarFiltros(filtros, table){
+	if(!filtros || filtros === {})
+		return {}
+	
 	filtros = filtros.map(filtro => {
-		for( let old_key in filtro){ 
-			const new_key = `$${table}.${old_key}$`
-			if (old_key !== new_key) {
-				Object.defineProperty(filtro, new_key, Object.getOwnPropertyDescriptor(filtro, old_key));
-				delete filtro[old_key];
+		for( let old_key in filtro ){ 
+				if(filtro[old_key] === undefined || filtro[old_key] === ""){
+					delete filtro[old_key];
+					return {}
+				}else{
+					const new_key = `$${table}.${old_key}$`
+					if (old_key !== new_key) {
+						Object.defineProperty(filtro, new_key, Object.getOwnPropertyDescriptor(filtro, old_key));
+						delete filtro[old_key];
+					}
+					return filtro
+				}
 			}
 		}
-		return filtro
-	})
+	)
 	return filtros
 }
 
