@@ -38,7 +38,7 @@ function initModels(sequelize) {
   temporada.hasMany(pilotocorrida, { as: "pilotocorridas", foreignKey: "id_ano" });
   pilotoequipe.belongsTo(temporada, { as: "id_ano_temporada", foreignKey: "id_ano" });
   temporada.hasMany(pilotoequipe, { as: "pilotoequipes", foreignKey: "id_ano" });
-  temporadaconstrutores.belongsTo(temporada, { as: "id_ano_temporada", foreignKey: "id_ano" });
+  temporadaconstrutores.belongsTo(temporada, { as: "temporada", foreignKey: "id_ano" });
   temporada.hasMany(temporadaconstrutores, { as: "temporadaconstrutores", foreignKey: "id_ano" });
 
   return {

@@ -4,6 +4,7 @@ module.exports = function(sequelize, DataTypes) {
     id_ano: {
       type: DataTypes.INTEGER,
       allowNull: true,
+      primaryKey: true,
       references: {
         model: 'temporada',
         key: 'id_ano'
@@ -12,6 +13,7 @@ module.exports = function(sequelize, DataTypes) {
     contructorid: {
       type: DataTypes.STRING(20),
       allowNull: true,
+      primaryKey: true,
       references: {
         model: 'construtores',
         key: 'contructorid'
@@ -21,6 +23,15 @@ module.exports = function(sequelize, DataTypes) {
     sequelize,
     tableName: 'temporadaconstrutores',
     schema: 'public',
-    timestamps: false
+    timestamps: false,
+    indexes: [
+      {
+        name: "temporadaconstrutores_pkey",
+        fields: [
+          { name: "id_ano" },
+          { name: "contructorid" }
+        ]
+      },
+    ]
   });
 };

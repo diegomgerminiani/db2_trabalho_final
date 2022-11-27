@@ -150,6 +150,50 @@ exports.findGridCorrida = async (params) => {
 	}
 };
 
+/**
+ * Busca por todas as instancias da entidade Piloto-Corrida
+ * @access ADMIN
+ * @return Se encontrado, retorna as instancias. Caso contrario, retorna null.
+ */
+exports.findTemporadaEquipe = async (params) => {
+	const { temporada, equipe, attributes, where: filtroBase } = params;
+	const { 
+		construtores: Contructor, 
+		temporada: Temporada, 
+		temporadaconstrutores: TemporadaConstrutores } = models;
+	
+	let where = []
+	where = where.concat(await ajustarFiltros(filtroBase, "temporadaconstrutores"))
+	where = where.concat(await ajustarFiltros(temporada.where, "temporada"))
+	where = where.concat(await ajustarFiltros(equipe.where, "contructor"))
+
+	console.log(where);
+
+	try {
+
+		const data = await TemporadaConstrutores.findAndCountAll({
+			attributes,
+			where,
+			include: [
+				{
+					model: Contructor,
+					as: 'contructor',
+					attributes: equipe.attributes
+				},{
+					model: Temporada,
+					as: 'temporada',
+					attributes: temporada.attributes
+				}
+			]
+		});
+		return data;
+		
+	} catch (error) {
+		console.log(error);
+		throw error;
+	}
+};
+
 async function ajustarFiltros(filtros, table){
 	if(!filtros || filtros === {})
 		return {}

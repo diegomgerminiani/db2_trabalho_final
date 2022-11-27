@@ -87,3 +87,19 @@ exports.findGridCorrida = async (request, response, next) => {
 	}
 };
 
+/**
+ * Busca por Temporadas e suas Equipes participantes de acordo com os parametros passados
+ * @access ADMIN
+ * @return Se encontrado, retorna as instancias com status OK. Caso contrario, retorna NOT_FOUND.
+ */
+exports.findTemporadaEquipe = async (request, response, next) => {
+	try {
+		const data = await service.findTemporadaEquipe(request.body);
+		return ( data && data.count > 0 && data.rows ? 
+			response.status(status.OK).send(data.rows) : 
+			response.status(status.NOT_FOUND).send());
+	} catch (error) { 
+		next(error);  
+	}
+};
+

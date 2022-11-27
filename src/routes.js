@@ -13,5 +13,6 @@ routes.get("/equipe", Controller.findEquipe);
 
 routes.get("/piloto-equipe", Controller.findPilotoEquipe);
 routes.get("/grid-corrida", Controller.findGridCorrida);
+routes.get("/temporada-equipe", Controller.findTemporadaEquipe);
 
 module.exports = routes;
