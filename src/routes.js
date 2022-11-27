@@ -7,12 +7,12 @@ const express = require("express");
 const routes = express.Router();
 const Controller = require("./controllers/Controller");
 
-routes.get("/piloto", Controller.findPiloto);
-routes.get("/circuito", Controller.findCircuito);
-routes.get("/equipe", Controller.findEquipe);
+routes.post("/piloto", Controller.findPiloto);
+routes.post("/circuito", Controller.findCircuito);
+routes.post("/equipe", Controller.findEquipe);
 
-routes.get("/piloto-equipe", Controller.findPilotoEquipe);
-routes.get("/grid-corrida", Controller.findGridCorrida);
-routes.get("/temporada-equipe", Controller.findTemporadaEquipe);
+routes.post("/piloto-equipe", Controller.findPilotoEquipe);
+routes.post("/grid-corrida", Controller.findGridCorrida);
+routes.post("/temporada-equipe", Controller.findTemporadaEquipe);
 
 module.exports = routes;

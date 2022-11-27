@@ -79,8 +79,6 @@ exports.findEquipe = async (params) => {
 	where = where.concat(await ajustarFiltros(piloto.where, "piloto"))
 	where = where.concat(await ajustarFiltros(equipe.where, "equipe"))
 
-	console.log(where);
-
 	try {
 
 		const data = await PilotoEquipe.findAndCountAll({
@@ -123,8 +121,6 @@ exports.findGridCorrida = async (params) => {
 	where = where.concat(await ajustarFiltros(piloto.where, "piloto"))
 	where = where.concat(await ajustarFiltros(circuito.where, "circuito"))
 
-	console.log(where);
-
 	try {
 
 		const data = await PilotoCorrida.findAndCountAll({
@@ -166,8 +162,6 @@ exports.findTemporadaEquipe = async (params) => {
 	where = where.concat(await ajustarFiltros(filtroBase, "temporadaconstrutores"))
 	where = where.concat(await ajustarFiltros(temporada.where, "temporada"))
 	where = where.concat(await ajustarFiltros(equipe.where, "contructor"))
-
-	console.log(where);
 
 	try {
 
