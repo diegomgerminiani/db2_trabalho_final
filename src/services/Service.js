@@ -67,22 +67,24 @@ exports.findEquipe = async (params) => {
  * @access ADMIN
  * @return Se encontrado, retorna as instancias. Caso contrario, retorna null.
  */
-exports.findPilotoEquipe = async (params) => {
-	const { piloto, equipe } = params;
+ exports.findPilotoEquipe = async (params) => {
+	const { piloto, equipe, attributes, where: filtroBase } = params;
 	const { 
 		piloto: Piloto, 
 		construtores: Construtores, 
 		pilotoequipe: PilotoEquipe } = models;
-
+	
 	let where = []
+	where = where.concat(await ajustarFiltros(filtroBase, "pilotoequipe"))
 	where = where.concat(await ajustarFiltros(piloto.where, "piloto"))
 	where = where.concat(await ajustarFiltros(equipe.where, "equipe"))
+
 	console.log(where);
 
 	try {
 
 		const data = await PilotoEquipe.findAndCountAll({
-			attributes: ["id_ano"],
+			attributes,
 			where,
 			include: [
 				{
@@ -105,28 +107,28 @@ exports.findPilotoEquipe = async (params) => {
 };
 
 /**
- * Busca por todas as instancias da entidade 
+ * Busca por todas as instancias da entidade Piloto-Corrida
  * @access ADMIN
  * @return Se encontrado, retorna as instancias. Caso contrario, retorna null.
  */
-exports.findPilotoEquipe = async (params) => {
-	const { piloto, equipe, ano: id_ano } = params;
+exports.findGridCorrida = async (params) => {
+	const { piloto, circuito, attributes, where: filtroBase } = params;
 	const { 
+		circuito: Circuito, 
 		piloto: Piloto, 
-		construtores: Construtores, 
-		pilotoequipe: PilotoEquipe } = models;
+		pilotocorrida: PilotoCorrida } = models;
 	
 	let where = []
-	where = where.concat(await ajustarFiltros([{id_ano}], "pilotoequipe"))
+	where = where.concat(await ajustarFiltros(filtroBase, "pilotocorrida"))
 	where = where.concat(await ajustarFiltros(piloto.where, "piloto"))
-	where = where.concat(await ajustarFiltros(equipe.where, "equipe"))
+	where = where.concat(await ajustarFiltros(circuito.where, "circuito"))
 
 	console.log(where);
 
 	try {
 
-		const data = await PilotoEquipe.findAndCountAll({
-			attributes: ["id_ano"],
+		const data = await PilotoCorrida.findAndCountAll({
+			attributes,
 			where,
 			include: [
 				{
@@ -134,9 +136,9 @@ exports.findPilotoEquipe = async (params) => {
 					as: 'piloto',
 					attributes: piloto.attributes
 				},{
-					model: Construtores,
-					as: 'equipe',
-					attributes: equipe.attributes
+					model: Circuito,
+					as: 'circuito',
+					attributes: circuito.attributes
 				}
 			]
 		});

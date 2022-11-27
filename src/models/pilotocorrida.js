@@ -22,7 +22,11 @@ module.exports = function(sequelize, DataTypes) {
     id_piloto: {
       type: DataTypes.STRING(20),
       allowNull: false,
-      primaryKey: true
+      primaryKey: true,
+      references: {
+        model: 'piloto',
+        key: 'id_piloto'
+      }
     },
     positionp: {
       type: DataTypes.INTEGER,

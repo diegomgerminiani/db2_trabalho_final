@@ -12,5 +12,6 @@ routes.get("/circuito", Controller.findCircuito);
 routes.get("/equipe", Controller.findEquipe);
 
 routes.get("/piloto-equipe", Controller.findPilotoEquipe);
+routes.get("/grid-corrida", Controller.findGridCorrida);
 
 module.exports = routes;

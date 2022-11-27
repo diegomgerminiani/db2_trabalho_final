@@ -22,8 +22,10 @@ function initModels(sequelize) {
   temporada.belongsToMany(circuito, { as: 'id_circuito_circuitos', through: pilotocorrida, foreignKey: "id_ano", otherKey: "id_circuito" });
   corrida.belongsTo(circuito, { as: "id_circuito_circuito", foreignKey: "id_circuito" });
   circuito.hasMany(corrida, { as: "corridas", foreignKey: "id_circuito" });
-  pilotocorrida.belongsTo(circuito, { as: "id_circuito_circuito", foreignKey: "id_circuito" });
+  pilotocorrida.belongsTo(circuito, { as: "circuito", foreignKey: "id_circuito" });
   circuito.hasMany(pilotocorrida, { as: "pilotocorridas", foreignKey: "id_circuito" });
+  pilotocorrida.belongsTo(piloto, { as: "piloto", foreignKey: "id_piloto" });
+  piloto.hasMany(pilotocorrida, { as: "pilotocorridas", foreignKey: "id_piloto" });
   pilotoequipe.belongsTo(construtores, { as: "equipe", foreignKey: "contructorid" });
   construtores.hasMany(pilotoequipe, { as: "pilotoequipes", foreignKey: "contructorid" });
   temporadaconstrutores.belongsTo(construtores, { as: "contructor", foreignKey: "contructorid" });
