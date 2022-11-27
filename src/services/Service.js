@@ -75,26 +75,10 @@ exports.findPilotoEquipe = async (params) => {
 		pilotoequipe: PilotoEquipe } = models;
 
 	let where = []
-	where = where.concat(piloto.where.map(where => {
-		for( let old_key in where){ 
-			const new_key = `$piloto.${old_key}$`
-			if (old_key !== new_key) {
-				Object.defineProperty(where, new_key, Object.getOwnPropertyDescriptor(where, old_key));
-				delete where[old_key];
-			}
-		}
-		return where
-	}))
-	where = where.concat(equipe.where.map(where => {
-		for( let old_key in where){ 
-			const new_key = `$equipe.${old_key}$`
-			if (old_key !== new_key) {
-				Object.defineProperty(where, new_key, Object.getOwnPropertyDescriptor(where, old_key));
-				delete where[old_key];
-			}
-		}
-		return where
-	}))
+	where = where.concat(await ajustarFiltros(piloto.where, "piloto"))
+	where = where.concat(await ajustarFiltros(equipe.where, "equipe"))
+	console.log(where);
+
 	try {
 
 		const data = await PilotoEquipe.findAndCountAll({
@@ -119,4 +103,18 @@ exports.findPilotoEquipe = async (params) => {
 		throw error;
 	}
 };
+
+async function ajustarFiltros(filtros, table){
+	filtros = filtros.map(filtro => {
+		for( let old_key in filtro){ 
+			const new_key = `$${table}.${old_key}$`
+			if (old_key !== new_key) {
+				Object.defineProperty(filtro, new_key, Object.getOwnPropertyDescriptor(filtro, old_key));
+				delete filtro[old_key];
+			}
+		}
+		return filtro
+	})
+	return filtros
+}
 
