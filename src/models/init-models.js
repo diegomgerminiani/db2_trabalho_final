@@ -20,24 +20,24 @@ function initModels(sequelize) {
 
   circuito.belongsToMany(temporada, { as: 'id_ano_temporadas', through: pilotocorrida, foreignKey: "id_circuito", otherKey: "id_ano" });
   temporada.belongsToMany(circuito, { as: 'id_circuito_circuitos', through: pilotocorrida, foreignKey: "id_ano", otherKey: "id_circuito" });
-  corrida.belongsTo(circuito, { as: "id_circuito_circuito", foreignKey: "id_circuito"});
-  circuito.hasMany(corrida, { as: "corridas", foreignKey: "id_circuito"});
-  pilotocorrida.belongsTo(circuito, { as: "id_circuito_circuito", foreignKey: "id_circuito"});
-  circuito.hasMany(pilotocorrida, { as: "pilotocorridas", foreignKey: "id_circuito"});
-  pilotoequipe.belongsTo(construtores, { as: "contructor", foreignKey: "contructorid"});
-  construtores.hasMany(pilotoequipe, { as: "pilotoequipes", foreignKey: "contructorid"});
-  temporadaconstrutores.belongsTo(construtores, { as: "contructor", foreignKey: "contructorid"});
-  construtores.hasMany(temporadaconstrutores, { as: "temporadaconstrutores", foreignKey: "contructorid"});
-  pilotoequipe.belongsTo(piloto, { as: "id_piloto_piloto", foreignKey: "id_piloto"});
-  piloto.hasMany(pilotoequipe, { as: "pilotoequipes", foreignKey: "id_piloto"});
-  corrida.belongsTo(temporada, { as: "id_ano_temporada", foreignKey: "id_ano"});
-  temporada.hasMany(corrida, { as: "corridas", foreignKey: "id_ano"});
-  pilotocorrida.belongsTo(temporada, { as: "id_ano_temporada", foreignKey: "id_ano"});
-  temporada.hasMany(pilotocorrida, { as: "pilotocorridas", foreignKey: "id_ano"});
-  pilotoequipe.belongsTo(temporada, { as: "id_ano_temporada", foreignKey: "id_ano"});
-  temporada.hasMany(pilotoequipe, { as: "pilotoequipes", foreignKey: "id_ano"});
-  temporadaconstrutores.belongsTo(temporada, { as: "id_ano_temporada", foreignKey: "id_ano"});
-  temporada.hasMany(temporadaconstrutores, { as: "temporadaconstrutores", foreignKey: "id_ano"});
+  corrida.belongsTo(circuito, { as: "id_circuito_circuito", foreignKey: "id_circuito" });
+  circuito.hasMany(corrida, { as: "corridas", foreignKey: "id_circuito" });
+  pilotocorrida.belongsTo(circuito, { as: "id_circuito_circuito", foreignKey: "id_circuito" });
+  circuito.hasMany(pilotocorrida, { as: "pilotocorridas", foreignKey: "id_circuito" });
+  pilotoequipe.belongsTo(construtores, { as: "equipe", foreignKey: "contructorid" });
+  construtores.hasMany(pilotoequipe, { as: "pilotoequipes", foreignKey: "contructorid" });
+  temporadaconstrutores.belongsTo(construtores, { as: "contructor", foreignKey: "contructorid" });
+  construtores.hasMany(temporadaconstrutores, { as: "temporadaconstrutores", foreignKey: "contructorid" });
+  pilotoequipe.belongsTo(piloto, { as: "piloto", foreignKey: "id_piloto" });
+  piloto.hasMany(pilotoequipe, { as: "pilotoequipes", foreignKey: "id_piloto" });
+  corrida.belongsTo(temporada, { as: "id_ano_temporada", foreignKey: "id_ano" });
+  temporada.hasMany(corrida, { as: "corridas", foreignKey: "id_ano" });
+  pilotocorrida.belongsTo(temporada, { as: "id_ano_temporada", foreignKey: "id_ano" });
+  temporada.hasMany(pilotocorrida, { as: "pilotocorridas", foreignKey: "id_ano" });
+  pilotoequipe.belongsTo(temporada, { as: "id_ano_temporada", foreignKey: "id_ano" });
+  temporada.hasMany(pilotoequipe, { as: "pilotoequipes", foreignKey: "id_ano" });
+  temporadaconstrutores.belongsTo(temporada, { as: "id_ano_temporada", foreignKey: "id_ano" });
+  temporada.hasMany(temporadaconstrutores, { as: "temporadaconstrutores", foreignKey: "id_ano" });
 
   return {
     circuito,
