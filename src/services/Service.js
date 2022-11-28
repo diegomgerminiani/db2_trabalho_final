@@ -17,10 +17,14 @@ const models = initModels(sequelize)
  * @return Se encontrado, retorna as instancias. Caso contrario, retorna null.
  */
 exports.findPiloto = async (params) => {
+	const { attributes, where } = params;
 	try {
 
-		const data = await models.piloto.findAndCountAll(params);
-		console.log(data);
+		const data = await models.piloto.findAndCountAll({ 
+			attributes: attributes && attributes.length ? attributes : undefined, 
+			where 
+		});
+		//console.log(data);
 		return data
 
 	} catch (error) {
@@ -34,10 +38,14 @@ exports.findPiloto = async (params) => {
  * @return Se encontrado, retorna as instancias. Caso contrario, retorna null.
  */
 exports.findCircuito = async (params) => {
+	const { attributes, where } = params;
 	try {
 
-		const data = await models.circuito.findAndCountAll(params);
-		console.log(data);
+		const data = await models.circuito.findAndCountAll({ 
+			attributes: attributes && attributes.length ? attributes : undefined, 
+			where
+		});
+		//console.log(data);
 		return data
 
 	} catch (error) {
@@ -51,10 +59,14 @@ exports.findCircuito = async (params) => {
  * @return Se encontrado, retorna as instancias. Caso contrario, retorna null.
  */
 exports.findEquipe = async (params) => {
+	const { attributes, where } = params;
 	try {
 
-		const data = await models.construtores.findAndCountAll(params);
-		console.log(data);
+		const data = await models.construtores.findAndCountAll({ 
+			attributes: attributes && attributes.length ? attributes : undefined, 
+			where 
+		});
+		//console.log(data);
 		return data
 
 	} catch (error) {
@@ -82,17 +94,17 @@ exports.findEquipe = async (params) => {
 	try {
 
 		const data = await PilotoEquipe.findAndCountAll({
-			attributes,
+			attributes: attributes && attributes.length ? attributes : undefined,
 			where,
 			include: [
 				{
 					model: Piloto,
 					as: 'piloto',
-					attributes: piloto.attributes
+					attributes: piloto.attributes && piloto.attributes.length ? piloto.attributes : undefined
 				},{
 					model: Construtores,
 					as: 'equipe',
-					attributes: equipe.attributes
+					attributes: equipe.attributes && equipe.attributes.length ? equipe.attributes : undefined
 				}
 			]
 		});
@@ -124,17 +136,17 @@ exports.findGridCorrida = async (params) => {
 	try {
 
 		const data = await PilotoCorrida.findAndCountAll({
-			attributes,
+			attributes: attributes && attributes.length ? attributes : undefined,
 			where,
 			include: [
 				{
 					model: Piloto,
 					as: 'piloto',
-					attributes: piloto.attributes
+					attributes: piloto.attributes && piloto.attributes.length ? piloto.attributes : undefined
 				},{
 					model: Circuito,
 					as: 'circuito',
-					attributes: circuito.attributes
+					attributes: circuito.attributes && circuito.attributes.length ? circuito.attributes : undefined
 				}
 			]
 		});
@@ -166,17 +178,17 @@ exports.findTemporadaEquipe = async (params) => {
 	try {
 
 		const data = await TemporadaConstrutores.findAndCountAll({
-			attributes,
+			attributes: attributes && attributes.length ? attributes : undefined,
 			where,
 			include: [
 				{
 					model: Contructor,
 					as: 'contructor',
-					attributes: equipe.attributes
+					attributes: equipe.attributes && equipe.attributes.length ? equipe.attributes : undefined
 				},{
 					model: Temporada,
 					as: 'temporada',
-					attributes: temporada.attributes
+					attributes: temporada.attributes && temporada.attributes.length ? temporada.attributes : undefined
 				}
 			]
 		});
@@ -189,25 +201,24 @@ exports.findTemporadaEquipe = async (params) => {
 };
 
 async function ajustarFiltros(filtros, table){
-	if(!filtros || filtros === {})
-		return {}
-	
-	filtros = filtros.map(filtro => {
-		for( let old_key in filtro ){ 
-				if(filtro[old_key] === undefined || filtro[old_key] === ""){
-					delete filtro[old_key];
-					return {}
-				}else{
+	if(filtros && filtros.length){
+		filtros.forEach((filtro) => {
+			if(!Object.keys(filtro).length){
+				const index = filtros.indexOf(filtro)
+				if(index > -1) filtros.splice(index, 1)
+			}else{
+				for( let old_key in filtro ){ 
 					const new_key = `$${table}.${old_key}$`
 					if (old_key !== new_key) {
 						Object.defineProperty(filtro, new_key, Object.getOwnPropertyDescriptor(filtro, old_key));
 						delete filtro[old_key];
-					}
-					return filtro
+					}					
 				}
 			}
-		}
-	)
-	return filtros
+
+		})
+		return filtros
+	}
+	return []
 }
 

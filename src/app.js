@@ -8,7 +8,6 @@ require('dotenv').config();
 const express = require('express');
 const cors = require('cors');
 const routes = require('./routes');
-const { testConnection } = require("./config/sql_connection")
 
 class AppController {
     constructor() {
@@ -18,7 +17,6 @@ class AppController {
         this.express.use(express.urlencoded({extended: true}));
         this.express.use(cors({origin: '*'}));
         this.express.use(routes);
-        testConnection()
     }
 }
 

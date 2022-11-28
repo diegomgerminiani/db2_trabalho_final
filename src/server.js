@@ -6,6 +6,7 @@
 
  //Versão do server:
 const project = require('../package.json');
+const { testConnection } = require("./config/sql_connection")
 const http = require('http');
 const app = require("./app").app;
 
@@ -21,6 +22,7 @@ async function server(){
         console.log(`Projeto: ${project.name}`);
         console.log(`Versão: ${project.version}`);
         console.log(`Porta: ${port}`);
+        testConnection()
         console.log(`=============================================\n`);
     });
 }
